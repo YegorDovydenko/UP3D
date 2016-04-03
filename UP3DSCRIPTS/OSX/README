@@ -1,5 +1,5 @@
 This is an apple script to automatically start the printing from e.g. Slic3r
-To use the script you need to copy it on yur machine and make it executable:
+To use the script you need to copy it on your machine and make it executable:
 
 1) start Terminal.app
 2) change to the directory you copied the script to
