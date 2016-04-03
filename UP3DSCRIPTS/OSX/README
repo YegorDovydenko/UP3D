@@ -1,0 +1,18 @@
+This is an apple script to automatically start the printing from e.g. Slic3r
+To use the script you need to copy it on yur machine and make it executable:
+
+1) start Terminal.app
+2) change to the directory you copied the script to
+3) "chmod +x print.applescript"
+4) for intallation lauch the script once via "./print.applecript" and select a .gcode file
+5) the script will ask where the executables for up3dtranscode and upload resides, the script saves both paths
+
+Installing the script in Slic3er
+
+1) Launch Slic3r
+2) got to Print Settings / Output options / Post-processing scripts
+3) enter the full path of the scipt e.g. "/Users/myself/Desktop/print.applescript" 
+
+
+The script asks for the nozzle height and saves this values for the next time the script gets launched.
+It shows you alawys the last used nozzle height and you can modify it in case you need to.
