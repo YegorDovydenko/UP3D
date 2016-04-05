@@ -1,6 +1,6 @@
 #! /usr/bin/osascript
 
---property extension_list : {"gcode", "gc", "g", "go"}
+-- property extension_list : {"gcode", "gc", "g", "go"}
 
 on launch (arguments)
 	--display notification "app got launched" with title "print_up3d"
@@ -43,6 +43,10 @@ on process(gcode)
 		if button returned of result = "Send To Printer" then
 			upload(tmpFile of transcoderResult)
 		end if
+		-- clean up tmp file
+		try
+			do shell script ("rm -rf " & quoted form of tmpFile of transocerResult)
+		end try
 	end if
 end process
 
@@ -161,4 +165,8 @@ on upload(pfilename)
 		end repeat
 		if retry = false then exit repeat
 	end repeat
+	-- clean up tmp file
+	try
+		do shell script ("rm -rf " & quoted form of ptmpUpload)
+	end try
 end upload
