@@ -13,3 +13,22 @@ Installing the app in Slic3er
 
 The script asks for the nozzle height and saves this values for the next time the app gets launched.
 It shows you always the last used nozzle height and you can modify it in case you need to.
+
+
+Notes for building the app and package
+
+Use Apple Script Editor to open the print_up3d.applescipt file.
+Export the file as Application and save it.
+Move print_up3d.app to the desired location, e.g. /Applications.
+Later the install package will use this location for deployment.
+In Terminal build the package with the command:
+
+productbuild --component /Applications/print_up3d.app print_up3d.pkg
+
+The print_up3d script uses some defaults in order to save the nozzle height and location of transcoder and uploader.
+When you delete those defaults the script will ask again for the location of the executables.
+Use the following command to delete all the defaults for the script:
+
+defaults delete com.up3d.transcode
+
+Then launch print_up3d.app again for assigning new values.
