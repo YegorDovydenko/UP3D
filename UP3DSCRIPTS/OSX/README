@@ -1,17 +1,20 @@
-This is an apple script to automatically start the printing from e.g. Slic3r.
-To use the script you can simply download print_up3d.pkg and install it with a double click.
+This is an apple script app to make the printing of G-code files easy.
+The app can be started and it asks then for a G-Code file, it supports
+drag and drop of G-Code files and it can be integrated with e.g. Slic3r.
+Simply download print_up3d.pkg and install it with a double click.
 The application is then located in the /Application folder.
 
-When you start printer_up3d.app the first time it will gradually ask for the executables of ”up3dtranscoder“ and “upload“.
+When you start printer_up3d.app the first time it will gradually ask
+for the executables of ”up3dtranscoder“ and “upload“.
 
 Installing the app in Slic3er
 
 1) copy the launch script print_up3d.sh to place you remember
 1) make it executable via Terminal with the command ”chmod +x print_up3d.sh“
-2) got to Print Settings / Output options / Post-processing scripts
+2) go to Print Settings / Output options / Post-processing scripts
 3) enter the full path of the script e.g. "/Users/myself/Desktop/print_up3d.sh“ 
 
-The script asks for the nozzle height and saves this values for the next time the app gets launched.
+The app asks for the nozzle height and saves this value for the next time.
 It shows you always the last used nozzle height and you can modify it in case you need to.
 
 
