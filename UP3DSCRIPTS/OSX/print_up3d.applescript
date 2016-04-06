@@ -1,6 +1,31 @@
 #! /usr/bin/osascript
 
--- property extension_list : {"gcode", "gc", "g", "go"}
+property extension_list : {"gcode", "gc", "g", "go"}
+
+on adding folder items to this_folder after receiving added_items
+	try
+		if number of items in added_items > 0 then
+			repeat with this_item in added_items
+				set item_info to the info for this_item
+				if (the name extension of the item_info is in the extension_list) then
+					set appInstalled to false
+					try
+						-- we prefer to use the app in order to get the nice progress bar displayed
+						do shell script ("open -a print_up3d " & quoted form of (POSIX path of this_item))
+						set appInstalled to true
+					end try
+					if appInstalled is not true then
+						-- no app, no progress bar :(
+						process(this_item)
+					end if
+					tell application "Finder" to delete file this_item
+				end if
+			end repeat
+		end if
+	on error thisErr
+		display notification thisErr
+	end try
+end adding folder items to
 
 on launch (arguments)
 	--display notification "app got launched" with title "print_up3d"
@@ -9,25 +34,25 @@ end launch
 on open (arguments)
 	--display notification "open"
 	if number of items in arguments > 0 then
-		set fn to first item of arguments as string
-		process(fn)
+		set fa to first item of arguments
+		process(fa)
 	else
 		--display notification "nothing to do" with title "print_up3d"
 	end if
 end open
 
 on run (arguments)
-	--display notification "my_run" with title "print_up3d"
+	--display notification "run" with title "print_up3d"
 	try
 		set argc to number of items in arguments
 	on error
 		set argc to 0
 	end try
 	
-	-- if no arguments are present we show a ask for a file
-	if argc = 0 then
+	-- if no arguments are present we ask for a file
+	if argc = 0 then		
 		set fname to (choose file with prompt Â
-			"UP3D select G-Code file to transcode and print" of type {"gcode", "g", "gco", "gc"})
+			"UP3D select G-Code file to transcode and print" of type extension_list)
 	else
 		set fname to (first item of arguments)
 	end if
@@ -35,6 +60,8 @@ on run (arguments)
 	process(fname)
 end run
 
+
+-- process a G-code file given in 
 on process(gcode)
 	set transcoderResult to transcode(gcode)
 	if number of items in transcoderResult > 0 then
@@ -43,9 +70,9 @@ on process(gcode)
 		if button returned of result = "Send To Printer" then
 			upload(tmpFile of transcoderResult)
 		end if
-		-- clean up tmp file
 		try
-			do shell script ("rm -rf " & quoted form of tmpFile of transocerResult)
+			-- clean up tmp file
+			do shell script ("rm -rf " & quoted form of tmpFile of transcoderResult)
 		end try
 	end if
 end process
