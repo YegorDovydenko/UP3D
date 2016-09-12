@@ -34,7 +34,7 @@
 
 // The number of linear motions that can be in the plan at any give time
 #ifndef BLOCK_BUFFER_SIZE
-  #define BLOCK_BUFFER_SIZE 1024
+  #define BLOCK_BUFFER_SIZE 8192
 #endif
 
 // This struct stores a linear movement of a g-code block motion with its critical "nominal" values
@@ -43,7 +43,9 @@ typedef struct {
   // Fields used by the bresenham algorithm for tracing the line
   // NOTE: Used by stepper algorithm to execute the block correctly. Do not alter these values.
   uint8_t direction_bits;    // The direction bit set for this block (refers to *_DIRECTION_BIT in config.h)
-  uint32_t steps[N_AXIS];    // Step count along each axis
+//-->MS
+  int32_t steps[N_AXIS];    // Step count along each axis
+//<--MS
   uint32_t step_event_count; // The maximum step axis count and number of steps required to complete this block. 
 
   // Fields used by the motion planner to manage acceleration
@@ -57,6 +59,10 @@ typedef struct {
   // uint8_t max_override;       // Maximum override value based on axis speed limits
 
  // int32_t line_number;
+
+//-->MS
+  double factor[N_AXIS];
+//<--MS
 
 } plan_block_t;
 

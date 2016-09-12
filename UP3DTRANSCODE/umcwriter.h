@@ -22,13 +22,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-bool    umcwriter_init(const char* filename, double heightZ, double printTimeMax);
+bool    umcwriter_init(const char* filename, const double heightZ, const char machine_type);
 void    umcwriter_finish();
 int32_t umcwriter_get_print_time();
 void    umcwriter_home(int32_t axes);
 void    umcwriter_virtual_home(double speedX, double speedY,double speedZ);
 void    umcwriter_move_direct(double X, double Y, double Z, double A, double F);
 void    umcwriter_planner_set_position(double X, double Y, double A);
+void    umcwriter_planner_set_a_position(double A);
 void    umcwriter_planner_add(double X, double Y, double A, double F);
 void    umcwriter_planner_sync();
 void    umcwriter_set_extruder_temp(double temp, bool wait);

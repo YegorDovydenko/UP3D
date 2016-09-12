@@ -24,8 +24,7 @@
 
 #define F_CPU 50000000
 
-#define X_INSERT_STEP_CORRECTIONS
-//#define X_WAIT_HEATBED_FACTOR
+//#define X_INSERT_STEP_CORRECTIONS
 
 #define N_AXIS 3 // Number of axes (X,Y,A)
 
@@ -33,40 +32,38 @@
 #define Y_AXIS 1
 #define A_AXIS 2
 
-#define DEFAULT_X_STEPS_PER_MM ( 854.0 * 512) // *512 for internal fraction representation in printer
-#define DEFAULT_Y_STEPS_PER_MM ( 854.0 * 512)
-#define DEFAULT_A_STEPS_PER_MM ( 854.0 * 512) // ??? 40.0*512
-
-//MAX #define DEFAULT_X_MAX_RATE (700.0)    // mm/sec
-//MAX #define DEFAULT_Y_MAX_RATE (700.0)    // mm/sec
-//MAX #define DEFAULT_A_MAX_RATE (50.0)     // mm/sec
-#define DEFAULT_X_MAX_RATE (200.0)    // mm/sec
-#define DEFAULT_Y_MAX_RATE (200.0)    // mm/sec
-#define DEFAULT_A_MAX_RATE (50.0)     // mm/sec
-
-//MAX #define DEFAULT_X_ACCELERATION (5000) // mm/sec^2
-//MAX #define DEFAULT_Y_ACCELERATION (5000) // mm/sec^2
-//MAX #define DEFAULT_A_ACCELERATION (5000) // mm/sec^2
-#define DEFAULT_X_ACCELERATION (3000) // mm/sec^2
-#define DEFAULT_Y_ACCELERATION (3000) // mm/sec^2
-#define DEFAULT_A_ACCELERATION (300)  // mm/sec^2
-
-#define DEFAULT_X_MAX_TRAVEL 122.0       // mm
-#define DEFAULT_Y_MAX_TRAVEL 122.0       // mm
-#define DEFAULT_A_MAX_TRAVEL 100000000.0 // mm
-
-#define DEFAULT_JUNCTION_DEVIATION 0.01  // mm
-
 //global settings
 typedef struct {
   // Axis settings
   double steps_per_mm[N_AXIS];
   double max_rate[N_AXIS];
   double acceleration[N_AXIS];
-  double max_travel[N_AXIS];
   double junction_deviation;
+  int    x_axes;
+  int    y_axes;
+  int    x_dir;
+  int    y_dir;
+  int    z_dir;
+  double x_hspeed_hi;
+  double y_hspeed_hi;
+  double z_hspeed_hi;
+  double x_hofs_hi;
+  double y_hofs_hi;
+  double z_hofs_hi;
+  double x_hspeed_lo;
+  double y_hspeed_lo;
+  double z_hspeed_lo;
+  double x_hofs_lo;
+  double y_hofs_lo;
+  double z_hofs_lo;
+  double heatbed_wait_factor;
 } settings_t;
+
 extern settings_t settings;
+
+extern settings_t settings_mini;
+extern settings_t settings_classic_plus;
+extern settings_t settings_box;
 
 // Minimum planner junction speed. Sets the default minimum junction speed the planner plans to at
 // every buffer block junction, except for starting from rest and end of the buffer, which are always
@@ -82,22 +79,9 @@ extern settings_t settings;
 // machines, perhaps to 0.1mm/min, but your success may vary based on multiple factors.
 #define MINIMUM_FEED_RATE 1.0 // (mm/min)
 
-// The temporal resolution of the acceleration management subsystem. A higher number gives smoother
-// acceleration, particularly noticeable on machines that run at very high feedrates, but may negatively
-// impact performance. The correct value for this parameter is machine dependent, so it's advised to
-// set this only as high as needed. Approximate successful values can widely range from 50 to 200 or more.
-// NOTE: Changing this value also changes the execution time of a segment in the step segment buffer..
-// When increasing this value, this stores less overall time in the segment buffer and vice versa. Make
-// certain the step segment buffer is increased/decreased to account for these changes.
-//#define ACCELERATION_TICKS_PER_SECOND 100.0
-#define ACCELERATION_TICKS_PER_SECOND (0.1/60.0)   //acceleration is handled in machine
-
-// Conversions
-#define MM_PER_INCH (25.40)
-#define INCH_PER_MM (0.0393701)
-
 // Useful macros
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #define min(a,b) (((a) < (b)) ? (a) : (b))
+
 
 #endif //up3d_h

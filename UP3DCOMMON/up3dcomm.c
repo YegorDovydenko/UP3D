@@ -67,7 +67,16 @@ bool UP3DCOMM_Open()
     UP3DCOMM_Close();
     return false;
   }
-  
+
+  //clean all outstanding printer responses (left from previous sessions)
+  for( ;; )
+  {
+    int read;
+    uint8_t buf[2048];
+    if( (0 != libusb_bulk_transfer( _libusb_dev_handle, (EP_IN | LIBUSB_ENDPOINT_IN), buf, sizeof(buf), &read, 10)) || (!read) )
+      break;
+  }
+
   return true;
 }
 
@@ -83,9 +92,10 @@ void UP3DCOMM_Close()
   _libusb_ctx = NULL;
 }
 
-int UP3DCOMM_Read( const uint8_t *data, const size_t maxdatalen )
+int UP3DCOMM_ReadTO( const uint8_t *data, const size_t maxdatalen, const int timeout )
 {
   int read;
+<<<<<<< HEAD:UP3DTOOLS/up3dcomm.c
   int ret;
   ret = libusb_bulk_transfer( _libusb_dev_handle, (EP_IN | LIBUSB_ENDPOINT_IN), (uint8_t*)data, maxdatalen, &read, 5000);
   if (ret != 0)
@@ -93,6 +103,9 @@ int UP3DCOMM_Read( const uint8_t *data, const size_t maxdatalen )
 //#ifdef _DEBUG_IN_OUT_
 	fprintf(stderr,"UP3DCOMM_Read failed with error code %d. Bytes %d of %d read.", ret, read, (int)maxdatalen);
 //#endif  
+=======
+  if( 0 != libusb_bulk_transfer( _libusb_dev_handle, (EP_IN | LIBUSB_ENDPOINT_IN), (uint8_t*)data, maxdatalen, &read, timeout) )
+>>>>>>> upstream/master:UP3DCOMMON/up3dcomm.c
     return -1;
   }
 
@@ -101,6 +114,11 @@ int UP3DCOMM_Read( const uint8_t *data, const size_t maxdatalen )
 #endif
 
   return read;
+}
+
+int UP3DCOMM_Read( const uint8_t *data, const size_t maxdatalen )
+{
+  return UP3DCOMM_ReadTO( data, maxdatalen, 500 );
 }
 
 int UP3DCOMM_Write( const uint8_t *data, const size_t datalen )
