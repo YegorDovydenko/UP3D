@@ -44,17 +44,31 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 $CC -Os -Wall \
     -framework IOKit \
     -framework CoreFoundation \
+<<<<<<< HEAD
+    -I /usr/local/Cellar/libusb/1.0.20/include \
+    -lobjc \
+    /usr/local/Cellar/libusb/1.0.20/lib/libusb-1.0.a  \
+    -o upload up3dcomm.c up3d.c up3ddata.c upload.c
+=======
     `pkg-config --cflags libusb-1.0`/.. \
     -I../UP3DCOMMON/ \
     -lobjc \
     `pkg-config --libs-only-L libusb-1.0|cut -c3-`/libusb-1.0.a \
     -o up3dload ../UP3DCOMMON/up3dcomm.c ../UP3DCOMMON/up3d.c ../UP3DCOMMON/up3ddata.c upload.c
+>>>>>>> upstream/master
 
 $STRIP up3dload
 
 $CC -Os -Wall \
     -framework IOKit \
     -framework CoreFoundation \
+<<<<<<< HEAD
+    -I /usr/local/Cellar/libusb/1.0.20/include \
+    -lobjc \
+    -lncurses \
+    /usr/local/Cellar/libusb/1.0.20/lib/libusb-1.0.a  \
+    -o upshell up3dcomm.c up3d.c up3ddata.c upshell.c
+=======
     `pkg-config --cflags libusb-1.0`/.. \
     -I../UP3DCOMMON/ \
     -lobjc \
@@ -72,6 +86,7 @@ $CC -Os -Wall \
     -lncurses \
     `pkg-config --libs-only-L libusb-1.0|cut -c3-`/libusb-1.0.a \
     -o up3dshell ../UP3DCOMMON/up3dcomm.c ../UP3DCOMMON/up3d.c ../UP3DCOMMON/up3ddata.c upshell.c
+>>>>>>> upstream/master
 
 $STRIP up3dshell
 

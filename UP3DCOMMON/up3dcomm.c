@@ -95,8 +95,19 @@ void UP3DCOMM_Close()
 int UP3DCOMM_ReadTO( const uint8_t *data, const size_t maxdatalen, const int timeout )
 {
   int read;
+<<<<<<< HEAD:UP3DTOOLS/up3dcomm.c
+  int ret;
+  ret = libusb_bulk_transfer( _libusb_dev_handle, (EP_IN | LIBUSB_ENDPOINT_IN), (uint8_t*)data, maxdatalen, &read, 5000);
+  if (ret != 0)
+  {
+//#ifdef _DEBUG_IN_OUT_
+	fprintf(stderr,"UP3DCOMM_Read failed with error code %d. Bytes %d of %d read.", ret, read, (int)maxdatalen);
+//#endif  
+=======
   if( 0 != libusb_bulk_transfer( _libusb_dev_handle, (EP_IN | LIBUSB_ENDPOINT_IN), (uint8_t*)data, maxdatalen, &read, timeout) )
+>>>>>>> upstream/master:UP3DCOMMON/up3dcomm.c
     return -1;
+  }
 
 #ifdef _DEBUG_IN_OUT_
   fprintf(stderr,"<"); _print_buffer( data, read );
@@ -117,8 +128,15 @@ int UP3DCOMM_Write( const uint8_t *data, const size_t datalen )
 #endif
 
   int written;
-  if( 0 != libusb_bulk_transfer( _libusb_dev_handle, (EP_OUT | LIBUSB_ENDPOINT_OUT), (uint8_t*)data, datalen, &written, 500) )
+  int ret;
+  ret = libusb_bulk_transfer( _libusb_dev_handle, (EP_OUT | LIBUSB_ENDPOINT_OUT), (uint8_t*)data, datalen, &written, 5000);
+  if (ret != 0)
+  {
+//#ifdef _DEBUG_IN_OUT_
+	fprintf(stderr,"UP3DCOMM_Write failed with error code %d. Bytes %d of %d written", ret, written, (int)datalen );
+//#endif  
     return -1;
+  }
 
   return written;
 }
